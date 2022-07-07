@@ -7,7 +7,6 @@ public class App {
 
         Scanner sc = new Scanner(System.in);
 
-
         outer : while(true){
             System.out.print(" 명령) ");
             String cmd = sc.nextLine().trim();
