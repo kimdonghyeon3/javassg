@@ -10,7 +10,7 @@ public class App {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int num = 0;
+        int num = 1;
 
         outer : while(true){
             System.out.print(" 명령) ");
@@ -20,20 +20,19 @@ public class App {
                 case "종료":
                     break outer;
                 case "등록":
-                    String saying;
+                    String content;
                     String author;
                     System.out.print(" 명언 : ");
-                    saying = br.readLine().trim();
+                    content = br.readLine().trim();
                     System.out.print(" 작가 : ");
                     author = br.readLine().trim();
                     System.out.println(num++ +"번 명언이 저장되었습니다.");
 
+                    WiseSaying wiseSaying = new WiseSaying(num, author, content);
 
                     break;
 
                 case "목록":
-
-
                 case "삭제":
                 case "수정":
 
@@ -41,10 +40,28 @@ public class App {
         }
     }
 
-    public void json(int num, String author, String saying){
+    public void changeJson(int num, String author, String saying){
 
     }
+}
 
+class WiseSaying {
+    private int id;
+    private String author;
+    private String content;
 
+    @Override
+    public String toString() {
+        return "WiseSaying{" +
+                "id=" + id +
+                ", author='" + author + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 
+    public WiseSaying(int num, String author, String content) {
+        this.id = num;
+        this.author = author;
+        this.content = content;
+    }
 }
