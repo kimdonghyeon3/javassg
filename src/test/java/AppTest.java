@@ -93,4 +93,9 @@ public class AppTest {
         assertEquals(1, no);
     }
 
+    @Test
+    public void 수정(){
+
+    }
+
 }
