@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    private BufferedReader br;
-    private List<WiseSaying> wiseSayings;
+    private final BufferedReader br;
+    private final List<WiseSaying> wiseSayings;
     private int wiseSayingLastId;
 
     public App() {
@@ -36,12 +36,54 @@ public class App {
                 case "목록":
                     list(rq);
                     break;
+                case "수정":
+                    edit(rq);
+                    break;
                 case "종료":
                     break outer;
             }
         }
 
         br.close();
+    }
+
+    private void edit(Rq rq) throws IOException {
+
+        int paramId = rq.getIntParam("id", 0);
+
+        // URL에 입력된 id가 없다면 작업중지
+        if (paramId == 0) {
+            System.out.println("id를 입력해주세요.");
+            return;
+        }
+
+        // URL에 입력된 id에 해당하는 명언객체 찾기
+        WiseSaying foundWiseSaying = findById(paramId);
+
+        // 찾지 못했다면 중지
+        if (foundWiseSaying == null) {
+            System.out.printf("%d번 명언은 존재하지 않습니다.\n", paramId);
+            return;
+        }
+
+        System.out.println("기존 명언 : " + foundWiseSaying.content);
+        System.out.print("새 명언 : ");
+        String newContent = br.readLine().trim();
+
+        // 입력된 id에 해당하는 명언객체를 리스트에서 수정
+        foundWiseSaying.content = newContent;
+        int index = indexFindById(paramId);
+
+        //찾으려는 명언이 없다면 사실 이 상화은 말이 안되긴함.. 찾았을 때부터 오류가 났어야되는데
+        //혹시 몰라서 넣어둠
+        if(index == -1) {
+            System.out.println("변경하려는 명언이 없습니다.");
+            return;
+        }
+
+        wiseSayings.set(index,foundWiseSaying);
+
+        System.out.printf("%d번 명언이 수정되었습니다.\n", paramId);
     }
 
     private void list(Rq rq) {
@@ -99,5 +141,15 @@ public class App {
         }
 
         return null;
+    }
+
+    private int indexFindById(int paramId) {
+
+        for(int i = 0 ; i < wiseSayings.size() ; i++){
+            if(wiseSayings.get(i).id == paramId)
+                return i;
+        }
+
+        return -1;
     }
 }

@@ -95,7 +95,8 @@ public class AppTest {
 
     @Test
     public void 수정(){
-
+        Rq rq = new Rq("수정?id=1");
+        int id = rq.getIntParam("id",0);
     }
 
 }
