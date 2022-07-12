@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,7 +10,7 @@ public class App {
 
     public App() {
         br = new BufferedReader(new InputStreamReader(System.in));
-        wiseSayings = new ArrayList<>();
+        wiseSayings = load();
         wiseSayingLastId = 0;
     }
 
@@ -41,6 +39,9 @@ public class App {
                     break;
                 case "종료":
                     break outer;
+                case "빌드":
+                    build(wiseSayings);
+                    break;
             }
         }
 
@@ -132,6 +133,51 @@ public class App {
 
         System.out.printf("%d번 명언이 삭제되었습니다.\n", paramId);
     }
+
+    private void build(List<WiseSaying> list){
+
+        JsonParsing jsonParsing = new JsonParsing(list);
+
+        String wiseSayingsJson = jsonParsing.getJson();
+
+        try{
+            OutputStream output = new FileOutputStream("data.json");
+            output.write(wiseSayingsJson.getBytes());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private List<WiseSaying> load(){
+
+        List<WiseSaying> list = new ArrayList<>();
+
+        try {
+            String filePath = "data.json"; // 대상 파일
+            FileInputStream fileStream = null; // 파일 스트림
+
+            fileStream = new FileInputStream(filePath);
+
+            byte[] readBuffer = new byte[fileStream.available()];
+            while (fileStream.read(readBuffer) != -1) {
+            }
+
+            String rs = new String(readBuffer);
+            JsonParsing jsonParsing = new JsonParsing();
+            list = jsonParsing.applyJson(rs);
+
+
+            fileStream.close(); // 스트림 닫기
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+
+        return list;
+
+    }
+
 
     private WiseSaying findById(int paramId) {
         for (WiseSaying wiseSaying : wiseSayings) {
