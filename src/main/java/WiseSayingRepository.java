@@ -7,11 +7,10 @@ import java.util.List;
 public class WiseSayingRepository {
     public List<WiseSaying> wiseSayings;
     public int wiseSayingLastId;
-    public JsonParsing jsonParsing;
 
     public WiseSayingRepository() {
         this.wiseSayings = load();
-        wiseSayingLastId = wiseSayings == null ? 0 : wiseSayings.get(wiseSayings.size()-1).id;
+        wiseSayingLastId = wiseSayings.size()== 0 ? 0 : wiseSayings.get(wiseSayings.size()-1).id;
     }
 
     public WiseSaying findById(int paramId) {

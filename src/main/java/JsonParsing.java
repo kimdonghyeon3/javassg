@@ -12,7 +12,7 @@ class JsonParsing {
     public JsonParsing(List<WiseSaying> list) {
         str += "[\n";
         for(WiseSaying w : list){
-            str += String.format("{\"id\":%d,\n\"content\":%s,\n\"author\":%s\n},\n", w.id, w.content, w.author);
+            str += String.format("{\"id\":%d,\n\"content\":\"%s\",\n\"author\":\"%s\"\n},\n", w.id, w.content, w.author);
         }
         str+= "]";
     }
@@ -23,6 +23,8 @@ class JsonParsing {
 
     public List<WiseSaying> applyJson(String rs) {
 
+        System.out.println("rs = " + rs);
+
         List<WiseSaying> list = new ArrayList<>();
 
         rs = rs.replace("\n","");
@@ -30,7 +32,7 @@ class JsonParsing {
         rs = rs.replace("]", "");
         rs = rs.replace("{", "");
 
-        String[] bits = rs.split("}");
+        String[] bits = rs.split("},");
 
         for(int i = 0 ; i < bits.length ; i++){
             String[] subBits = bits[i].split(",");
@@ -38,14 +40,20 @@ class JsonParsing {
             int id = -1;
             String content = "";
             String author = "";
+            System.out.println("bits.length = " + bits.length);
 
             for(int j = 0 ; j < subBits.length ; j++){
+
+                System.out.println("subBits.length = " + subBits.length);
 
 
                 String[] fieldBits = subBits[j].split(":");
 
                 String fieldName = fieldBits[0].replace("\"","");
-                String fieldValue = fieldBits[1];
+                String fieldValue = fieldBits[1].replace("\"","");
+
+                System.out.println("fieldName = " + fieldName);
+                System.out.println("fieldValue = " + fieldValue);
 
                 if (fieldName.equals("id")) {
                     id = (Integer.parseInt(fieldValue));
