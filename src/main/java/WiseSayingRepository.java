@@ -11,7 +11,7 @@ public class WiseSayingRepository {
 
     public WiseSayingRepository() {
         this.wiseSayings = load();
-        wiseSayingLastId = 0;
+        wiseSayingLastId = wiseSayings == null ? 0 : wiseSayings.get(wiseSayings.size()-1).id;
     }
 
     public WiseSaying findById(int paramId) {

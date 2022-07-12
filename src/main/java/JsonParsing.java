@@ -12,7 +12,7 @@ class JsonParsing {
     public JsonParsing(List<WiseSaying> list) {
         str += "[\n";
         for(WiseSaying w : list){
-            str += String.format("{\"id\":%d,\n\"content\":%s,\n\"author\":%s\n}\n", w.id, w.content, w.author);
+            str += String.format("{\"id\":%d,\n\"content\":%s,\n\"author\":%s\n},\n", w.id, w.content, w.author);
         }
         str+= "]";
     }
