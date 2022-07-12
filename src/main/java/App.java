@@ -39,7 +39,7 @@ public class App {
                 case "종료":
                     break outer;
                 case "빌드":
-                    wiseSayingController.build();
+                    wiseSayingController.wiseSayingRepository.build();
                     break;
             }
         }
