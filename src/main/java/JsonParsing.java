@@ -14,7 +14,8 @@ class JsonParsing {
         for(WiseSaying w : list){
             str += String.format("{\"id\":%d,\n\"content\":\"%s\",\n\"author\":\"%s\"\n},\n", w.id, w.content, w.author);
         }
-        str+= "]";
+        str = str.substring(0, str.length()-2);
+        str+= "\n]";
     }
 
     public String getJson(){
