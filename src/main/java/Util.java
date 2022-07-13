@@ -1,15 +1,15 @@
 import java.util.ArrayList;
 import java.util.List;
 
-class JsonParsing {
+class Util {
 
     private String str = "";
 
-    public JsonParsing() {
+    public Util() {
 
     }
 
-    public JsonParsing(List<WiseSaying> list) {
+    public Util(List<WiseSaying> list) {
         str += "[\n";
         for(WiseSaying w : list){
             str += String.format("{\"id\":%d,\n\"content\":\"%s\",\n\"author\":\"%s\"\n},\n", w.id, w.content, w.author);
@@ -67,7 +67,6 @@ class JsonParsing {
                 }
 
             }
-
             list.add(new WiseSaying(id,content,author));
         }
 

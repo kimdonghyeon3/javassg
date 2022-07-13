@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WiseSayingRepository {
+
     public List<WiseSaying> wiseSayings;
     public int wiseSayingLastId;
 
@@ -25,9 +26,9 @@ public class WiseSayingRepository {
 
     public void build(){
 
-        JsonParsing jsonParsing = new JsonParsing(wiseSayings);
+        Util util = new Util(wiseSayings);
 
-        String wiseSayingsJson = jsonParsing.getJson();
+        String wiseSayingsJson = util.getJson();
 
         try{
             OutputStream output = new FileOutputStream("data.json");
@@ -54,8 +55,8 @@ public class WiseSayingRepository {
             }
 
             String rs = new String(readBuffer);
-            JsonParsing jsonParsing = new JsonParsing();
-            list = jsonParsing.applyJson(rs);
+            Util util = new Util();
+            list = util.applyJson(rs);
 
 
             fileStream.close(); // 스트림 닫기
@@ -66,5 +67,43 @@ public class WiseSayingRepository {
 
         return list;
 
+    }
+
+    public WiseSaying write(String content, String author) {
+
+        int id = ++wiseSayingLastId;
+        WiseSaying wiseSaying = new WiseSaying(id, content, author);
+        wiseSayings.add(wiseSaying);
+
+        return wiseSaying;
+    }
+
+    public boolean edit(int id, String content, String author) {
+        WiseSaying wiseSaying = findById(id);
+
+        if (wiseSaying == null) {
+            return false;
+        }
+
+        wiseSaying.content = content;
+        wiseSaying.author = author;
+
+        return true;
+    }
+
+    public boolean remove(int id) {
+        WiseSaying wiseSaying = findById(id);
+
+        if (wiseSaying == null) {
+            return false;
+        }
+
+        wiseSayings.remove(wiseSaying);
+
+        return true;
+    }
+
+    public List<WiseSaying> findAll() {
+        return wiseSayings;
     }
 }
