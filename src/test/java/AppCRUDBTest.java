@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AppCRUDBTest {
@@ -36,8 +37,24 @@ public class AppCRUDBTest {
     }
 
     @Test
-    void 삭제테스트(){
-        String input = "종료";
+    void 삭제테스트() throws IOException {
+        String rs = AppTestRunner.run("""
+                등록
+                나의 죽음을 적들에게 알리지 말라
+                이순신
+                등록
+                나에게 불가능이란 없다.
+                나폴레옹
+                삭제?id=1
+                목록
+                삭제?id=1
+                종료
+                """);
+
+        assertTrue(rs.contains("1번 명언이 삭제되었습니다."));
+        assertTrue(rs.contains("2 / 나폴레옹 / 나에게 불가능이란 없다."));
+        assertFalse(rs.contains("1 / 이순신 / 나의 죽음을 적들에게 알리지 말라"));
+        assertTrue(rs.contains("1번 명언은 존재하지 않습니다."));
     }
 
     @Test

@@ -1,12 +1,12 @@
-import java.io.IOException;
 import java.util.List;
 
 public class WiseSayingService {
 
     private WiseSayingRepository wiseSayingRepository;
 
-    public WiseSayingService() {
-        wiseSayingRepository = new WiseSayingRepository();
+    public WiseSayingService(boolean flag) {
+
+        wiseSayingRepository = new WiseSayingRepository(flag);
     }
 
     public WiseSaying write(String content, String author) {

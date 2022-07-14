@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WiseSayingController {
@@ -8,8 +7,8 @@ public class WiseSayingController {
     private BufferedReader br;
     WiseSayingService wiseSayingService;
 
-    public WiseSayingController(BufferedReader br) {
-        wiseSayingService = new WiseSayingService();
+    public WiseSayingController(BufferedReader br, boolean flag) {
+        wiseSayingService = new WiseSayingService(flag);
         this.br = br;
     }
 

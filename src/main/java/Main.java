@@ -4,6 +4,6 @@ import java.io.InputStreamReader;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        new App(new BufferedReader(new InputStreamReader(System.in))).run();
+        new App(new BufferedReader(new InputStreamReader(System.in)), true).run();
     }
 }

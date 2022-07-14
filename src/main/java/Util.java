@@ -68,10 +68,12 @@ class Util {
         try{
             OutputStream output = new FileOutputStream(fileName);
             output.write(json.getBytes());
+
+            System.out.println("저장이 완료되었습니다.");
         }catch(Exception e){
             e.printStackTrace();
         }
-        System.out.println("저장이 완료되었습니다.");
+
 
     }
 

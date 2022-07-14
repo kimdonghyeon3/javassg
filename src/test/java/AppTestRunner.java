@@ -12,7 +12,7 @@ public class AppTestRunner {
         // 그것을 특정 바이트스트림에 쌓이도록 한다.
         ByteArrayOutputStream output = TestUtil.setOutToByteArray();
 
-        new App(br).run();
+        new App(br, false).run();
 
         // 바이트스트림이 여태까지 모아놓은 출력들을 방출한다.
         String rs = output.toString();

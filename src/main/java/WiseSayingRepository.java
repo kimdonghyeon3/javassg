@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class WiseSayingRepository {
@@ -5,19 +6,35 @@ public class WiseSayingRepository {
     public List<WiseSaying> wiseSayings;
     public int wiseSayingLastId;
     public Util util;
+    public boolean flag;
 
-    public WiseSayingRepository() {
+    public WiseSayingRepository(boolean flag) {
+
         util = new Util();
 
-        String json = util.fileLoadByJson("data.json");
-        this.wiseSayings = util.jsonToList(json);
+        String json;
+
+        this.flag = flag;
+
+        if(flag){
+            json = util.fileLoadByJson("data.json");
+            this.wiseSayings = util.jsonToList(json);
+        }else{
+            json = util.fileLoadByJson("");
+            this.wiseSayings = new ArrayList<>();
+        }
+
+
 
         wiseSayingLastId = wiseSayings.size()== 0 ? 0 : wiseSayings.get(wiseSayings.size()-1).id;
     }
 
     public void build(){
         String json = util.listToJson(wiseSayings);
-        util.fileSaveByJson(json, "data.json");
+        if(flag)
+            util.fileSaveByJson(json, "data.json");
+        else
+            util.fileSaveByJson(json, "test.json");
     }
 
     public WiseSaying write(String content, String author) {

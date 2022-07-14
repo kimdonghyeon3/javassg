@@ -8,9 +8,9 @@ public class App {
     private WiseSayingController wiseSayingController;
 
 
-    public App(BufferedReader br) {
+    public App(BufferedReader br, boolean flag) {
         this.br = br;
-        wiseSayingController = new WiseSayingController(br);
+        wiseSayingController = new WiseSayingController(br, flag);
     }
 
     public void run() throws IOException {
