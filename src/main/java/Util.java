@@ -21,6 +21,11 @@ class Util {
 
     public List<WiseSaying> jsonToList(String json){
 
+
+        System.out.println("json = " + json);
+        if(json.equals("error"))
+            return new ArrayList<>();
+
         List<WiseSaying> list = new ArrayList<>();
 
         json = json.replace("\n","")
@@ -31,7 +36,14 @@ class Util {
         String[] bits = json.split("},");
 
         for(int i = 0 ; i < bits.length ; i++){
-            String[] subBits = bits[i].split(",");
+
+            String[] idBits = bits[i].split(",",2);
+            String[] contentBits = idBits[1].split("\",");
+            String[] subBits = new String[idBits.length + contentBits.length];
+
+            System.arraycopy(idBits, 0 , subBits, 0, idBits.length);
+            System.arraycopy(contentBits, 0 , subBits, idBits.length, contentBits.length);
+            //String[] subBits = bits[i].split(",",1);
 
             int id = -1;
             String content = "";
@@ -43,8 +55,7 @@ class Util {
 
                 String fieldName = fieldBits[0].replace("\"","")
                         .replace("}", "");
-                String fieldValue = fieldBits[1].replace("\"","")
-                        .replace("}", "");
+                String fieldValue = fieldBits[1].replace("\"","");
 
                 if (fieldName.equals("id")) {
                     id = (Integer.parseInt(fieldValue));
