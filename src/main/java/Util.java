@@ -1,60 +1,50 @@
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 class Util {
 
-    private String str = "";
+    public String listToJson(List<WiseSaying> list){
+        String json = "[\n";
 
-    public Util() {
-
-    }
-
-    public Util(List<WiseSaying> list) {
-        str += "[\n";
-        for(WiseSaying w : list){
-            str += String.format("{\"id\":%d,\n\"content\":\"%s\",\n\"author\":\"%s\"\n},\n", w.id, w.content, w.author);
+        for(WiseSaying w : list) {
+            json += String.format("{\"id\":%d,\n\"content\":\"%s\",\n\"author\":\"%s\"\n},\n", w.id, w.content, w.author);
         }
-        str = str.substring(0, str.length()-2);
-        str+= "\n]";
+
+        json = json.substring(0, json.length()-2);
+        json += "\n]";
+
+        return json;
     }
 
-    public String getJson(){
-        return str;
-    }
-
-    public List<WiseSaying> applyJson(String rs) {
-
-        System.out.println("rs = " + rs);
+    public List<WiseSaying> jsonToList(String json){
 
         List<WiseSaying> list = new ArrayList<>();
 
-        rs = rs.replace("\n","");
-        rs = rs.replace("[", "");
-        rs = rs.replace("]", "");
-        rs = rs.replace("{", "");
+        json = json.replace("\n","")
+                .replace("[", "")
+                .replace("]", "")
+                .replace("{", "");
 
-        String[] bits = rs.split("},");
+        String[] bits = json.split("},");
 
         for(int i = 0 ; i < bits.length ; i++){
             String[] subBits = bits[i].split(",");
 
             int id = -1;
             String content = "";
-            String author = "";
-            System.out.println("bits.length = " + bits.length);
+            String author = "";;
 
             for(int j = 0 ; j < subBits.length ; j++){
 
-                System.out.println("subBits.length = " + subBits.length);
-
-
                 String[] fieldBits = subBits[j].split(":");
 
-                String fieldName = fieldBits[0].replace("\"","");
-                String fieldValue = fieldBits[1].replace("\"","");
-
-                System.out.println("fieldName = " + fieldName);
-                System.out.println("fieldValue = " + fieldValue);
+                String fieldName = fieldBits[0].replace("\"","")
+                        .replace("}", "");
+                String fieldValue = fieldBits[1].replace("\"","")
+                        .replace("}", "");
 
                 if (fieldName.equals("id")) {
                     id = (Integer.parseInt(fieldValue));
@@ -72,4 +62,41 @@ class Util {
 
         return list;
     }
+
+    public void fileSaveByJson(String json, String fileName){
+
+        try{
+            OutputStream output = new FileOutputStream(fileName);
+            output.write(json.getBytes());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("저장이 완료되었습니다.");
+
+    }
+
+    public String fileLoadByJson(String fileName){
+
+        String fileStr = "";
+
+        try {
+            String filePath = fileName; // 대상 파일
+            FileInputStream fileStream = null; // 파일 스트림
+
+            fileStream = new FileInputStream(filePath);
+
+            byte[] readBuffer = new byte[fileStream.available()];
+            while (fileStream.read(readBuffer) != -1) {
+            }
+
+            fileStr = new String(readBuffer);
+
+            fileStream.close(); // 스트림 닫기
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return fileStr == "" ? "error": fileStr;
+    }
+
 }

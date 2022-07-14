@@ -8,8 +8,8 @@ public class App {
     private WiseSayingController wiseSayingController;
 
 
-    public App() {
-        br = new BufferedReader(new InputStreamReader(System.in));
+    public App(BufferedReader br) {
+        this.br = br;
         wiseSayingController = new WiseSayingController(br);
     }
 

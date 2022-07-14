@@ -40,11 +40,7 @@ public class Rq {
 
         String paramValue = queryParams.get(paramName);
 
-        if (paramValue.length() == 0) {
-            return defaultValue;
-        }
-
-        return Integer.parseInt(paramValue);
+        return paramValue.length() == 0 ? defaultValue : Integer.parseInt(paramValue);
     }
 
     public String getPath() {

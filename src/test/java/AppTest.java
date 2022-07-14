@@ -4,51 +4,33 @@ import java.io.*;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AppTest {
 
     @Test
-    public void 테스트_실험(){
-        int rs = 10 + 20;
-        assertEquals(30,rs);
-    }
-
-    //사용자 입력을 테스트하는 법!
-    @Test
-    public void 테스트_스캐너() throws IOException {
+    public void bufferedReaderTest() throws IOException {
         String input = """
                 등록
                 명언1
                 작가1
                 """.stripIndent();
-        InputStream in = new ByteArrayInputStream(input.getBytes());
 
+        InputStream in = new ByteArrayInputStream(input.getBytes());
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
-        Scanner sc = new Scanner(in);
+        String cmd = br.readLine();
+        String content = br.readLine();
+        String author = br.readLine();
 
-        String cmd = sc.nextLine().trim();
-        String content = sc.nextLine().trim();
-        String author = sc.nextLine().trim();
-
-        assertEquals("등록",cmd);
-        assertEquals("명언1",content);
-        assertEquals("작가1",author);
-
-
-//        String cmd1 = br.readLine();
-//        String content1 = br.readLine();
-//        String author1 = br.readLine();
-//
-//        assertEquals("등록",cmd1);
-//        assertEquals("명언1",content1);
-//        assertEquals("작가1",author1);
-
+        assertEquals("등록", cmd);
+        assertEquals("명언1", content);
+        assertEquals("작가1", author);
     }
 
     @Test
-    public void 표준출력을_리다이렉션하여_결과를_문자열로_받기() throws IOException {
-        // 표준출력을 리다이렉션
+    public void getPrintOut() throws IOException{
+        //표준 출력 리다이렉션
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
 
@@ -56,47 +38,22 @@ public class AppTest {
 
         String rs = output.toString().trim();
 
-        // 표준출력을 원상복구
+        //표준 출력 원상복구
         System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
         output.close();
 
         assertEquals("안녕", rs);
     }
 
-
     @Test
-    public void Rq__getPath() {
-        Rq rq = new Rq("삭제?id=1");
+    void startPrintOut() throws IOException{
 
-        String path = rq.getPath();
+        String rs = AppTestRunner.run("""
+                종료
+                """);;
 
-        assertEquals("삭제", path);
-    }
-
-    @Test
-    public void Rq__getIntParam() {
-        Rq rq = new Rq("삭제?id=1");
-
-        int id = rq.getIntParam("id", 0);
-
-        assertEquals(1, id);
-    }
-
-    @Test
-    public void Rq__getIntParam__2() {
-        Rq rq = new Rq("검색?id=10&no=1");
-
-        int id = rq.getIntParam("id", 0);
-        int no = rq.getIntParam("no", 0);
-
-        assertEquals(10, id);
-        assertEquals(1, no);
-    }
-
-    @Test
-    public void 수정(){
-        Rq rq = new Rq("수정?id=1");
-        int id = rq.getIntParam("id",0);
+        assertTrue(rs.contains("== 명언 SSG =="));
+        assertTrue(rs.contains("명령) "));
     }
 
 }
