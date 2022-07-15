@@ -1,6 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.lang.constant.Constable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,55 +20,71 @@ class Util {
         return json;
     }
 
-    public List<WiseSaying> jsonToList(String json){
+    //초기 json 괄호 제거
+    public String intializeRemoveJsonBracket(String str){
 
-        if(json.equals("error"))
-            return new ArrayList<>();
-
-        List<WiseSaying> list = new ArrayList<>();
-
-        json = json.replace("\n","")
+        str = str.replace("\n","")
                 .replace("[", "")
                 .replace("]", "")
                 .replace("{", "");
 
+        return str;
+    }
+
+    //명언에 ,이 있는 것을 고려하여 id, content, author을 나누자
+    public String[] splitIdContentAuthor(String str){
+
+        String[] idBits = str.split(",",2);
+        String[] contentAndAuthorBits = idBits[1].split("\",");
+        String[] subBits = new String[idBits.length + contentAndAuthorBits.length];
+
+        System.arraycopy(idBits, 0 , subBits, 0, idBits.length);
+        System.arraycopy(contentAndAuthorBits, 0 , subBits, idBits.length, contentAndAuthorBits.length);
+
+        return subBits;
+    }
+
+    //id, content, author과 value를 나누자
+    public String[] splitNameValue(String str){
+        String[] fieldBits = str.split(":");
+        String[] fieldNameValue = new String[2];
+        fieldNameValue[0] = fieldBits[0].replace("\"","")
+                .replace("}", "");
+        fieldNameValue[1] = fieldBits[1].replace("\"","")
+                .replace("}", "");
+
+        return fieldNameValue;
+    }
+
+    public List<WiseSaying> jsonToList(String json){
+
+        List<WiseSaying> list = new ArrayList<>();
+
+        if(json.equals("error"))
+            return list;
+
+        json = intializeRemoveJsonBracket(json);
         String[] bits = json.split("},");
 
         for(int i = 0 ; i < bits.length ; i++){
 
-            String[] idBits = bits[i].split(",",2);
-            String[] contentBits = idBits[1].split("\",");
-            String[] subBits = new String[idBits.length + contentBits.length];
-
-            System.arraycopy(idBits, 0 , subBits, 0, idBits.length);
-            System.arraycopy(contentBits, 0 , subBits, idBits.length, contentBits.length);
-            //String[] subBits = bits[i].split(",",1);
-
-            int id = -1;
-            String content = "";
-            String author = "";;
+            String[] subBits = splitIdContentAuthor(bits[i]);
+            WiseSaying wiseSaying = new WiseSaying(-1, "", "");
 
             for(int j = 0 ; j < subBits.length ; j++){
 
-                String[] fieldBits = subBits[j].split(":");
+                String[] fieldNameValue = splitNameValue(subBits[j]);
 
-                String fieldName = fieldBits[0].replace("\"","")
-                        .replace("}", "");
-                String fieldValue = fieldBits[1].replace("\"","")
-                        .replace("}", "");
-
-                if (fieldName.equals("id")) {
-                    id = (Integer.parseInt(fieldValue));
-                }
-                if (fieldName.equals("content")) {
-                    content = fieldValue;
-                }
-                if (fieldName.equals("author")) {
-                    author = fieldValue;
+                if (fieldNameValue[0].equals("id")) {
+                    wiseSaying.id = (Integer.parseInt(fieldNameValue[1]));
+                }else if (fieldNameValue[0].equals("content")) {
+                    wiseSaying.content = fieldNameValue[1];
+                }else if (fieldNameValue[0].equals("author")) {
+                    wiseSaying.author = fieldNameValue[1];
                 }
 
             }
-            list.add(new WiseSaying(id,content,author));
+            list.add(wiseSaying);
         }
 
         return list;

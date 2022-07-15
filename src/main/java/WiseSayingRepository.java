@@ -11,9 +11,7 @@ public class WiseSayingRepository {
     public WiseSayingRepository(boolean flag) {
 
         util = new Util();
-
         String json;
-
         this.flag = flag;
 
         if(flag){
@@ -23,8 +21,6 @@ public class WiseSayingRepository {
             json = util.fileLoadByJson("");
             this.wiseSayings = new ArrayList<>();
         }
-
-
 
         wiseSayingLastId = wiseSayings.size()== 0 ? 0 : wiseSayings.get(wiseSayings.size()-1).id;
     }
