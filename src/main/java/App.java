@@ -12,7 +12,7 @@ public class App {
         this.br = br;
         wiseSayingController = new WiseSayingController(br, flag);
     }
-
+//
     public void run() throws IOException {
         System.out.println("== 명언 SSG ==");
 
