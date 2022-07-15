@@ -21,8 +21,6 @@ class Util {
 
     public List<WiseSaying> jsonToList(String json){
 
-
-        System.out.println("json = " + json);
         if(json.equals("error"))
             return new ArrayList<>();
 
@@ -55,7 +53,8 @@ class Util {
 
                 String fieldName = fieldBits[0].replace("\"","")
                         .replace("}", "");
-                String fieldValue = fieldBits[1].replace("\"","");
+                String fieldValue = fieldBits[1].replace("\"","")
+                        .replace("}", "");
 
                 if (fieldName.equals("id")) {
                     id = (Integer.parseInt(fieldValue));
