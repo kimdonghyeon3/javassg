@@ -59,7 +59,7 @@ TDD개발 방법론을 직접 적용해 보며, JSON Paring을 구현해보고, 
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/kimdonghyeon3/escaperoom.git
+   git clone https://github.com/kimdonghyeon3/javassg
    ```
 
 2. Install NPM packages
